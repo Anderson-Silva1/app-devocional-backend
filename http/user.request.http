@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:3000
+
+### Buscar todos os usuários
+GET {{baseUrl}}/users?limit=10&offset=0
+
+### Buscar um usuário específico
+GET {{baseUrl}}/users/1
+
+### Criar um novo usuário
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "andersonexample.com",
+  "password": "securepassword"
+}
+
+### Atualizar um novo usuário
+PATCH {{baseUrl}}/users/1
+Content-Type: application/json
+
+{
+  "name": "Anderson",
+  "email": "anderson@example.com",
+  "password": "securepassword"
+}
+
+
+### Deletar um usuário
+DELETE {{baseUrl}}/users/1
+
+
+
+
