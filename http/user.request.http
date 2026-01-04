@@ -4,20 +4,20 @@
 GET {{baseUrl}}/users?limit=10&offset=0
 
 ### Buscar um usuário específico
-GET {{baseUrl}}/users/1
+GET {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8
 
 ### Criar um novo usuário
 POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-  "name": "",
-  "email": "andersonexample.com",
+  "name": "anderson",
+  "email": "anderson@example2.com",
   "password": "securepassword"
 }
 
 ### Atualizar um novo usuário
-PATCH {{baseUrl}}/users/1
+PATCH {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8
 Content-Type: application/json
 
 {
@@ -28,8 +28,8 @@ Content-Type: application/json
 
 
 ### Deletar um usuário
-DELETE {{baseUrl}}/users/1
+DELETE {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8
 
 
-
-
+### Restaurar um usuário deletado
+POST {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8/restore

@@ -27,7 +27,7 @@ export class UserController {
 
   @Get(':id')
   getUser(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.getUserId(id);
+    return this.userService.getUserById(id);
   }
 
   @Post()
@@ -46,5 +46,10 @@ export class UserController {
   @Delete(':id')
   deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.deleteUser(id);
+  }
+
+  @Post(':id/restore')
+  restoreUser(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.restoreUser(id);
   }
 }
