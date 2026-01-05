@@ -45,11 +45,17 @@ export class UserService {
   }) {
     // console.log('Limit:', limit, 'Offset:', offset);
 
-    const users = await this.userRepository.find({ take: limit, skip: offset });
+    const users = await this.userRepository.find({
+      order: { createdAt: 'DESC' },
+      take: limit,
+      skip: offset,
+    });
 
     return {
       message: 'Listando todos os usuários com sucesso',
       sucess: true,
+      statusCode: 200,
+      meta: { limit, offset, total: users.length },
       data: users.map((user) => this.toResponseDto(user)),
     } as ResponseApiDto<ResponseUserDto[]>;
   }
@@ -60,6 +66,7 @@ export class UserService {
     return {
       message: 'Usuário encontrado com sucesso',
       sucess: true,
+      statusCode: 200,
       data: this.toResponseDto(user),
     } as ResponseApiDto<ResponseUserDto>;
   }
@@ -81,6 +88,7 @@ export class UserService {
     return {
       message: 'Usuário criado com sucesso',
       sucess: true,
+      statusCode: 201,
       data: this.toResponseDto(newUser),
     } as ResponseApiDto<ResponseUserDto>;
   }
@@ -120,6 +128,7 @@ export class UserService {
     return {
       message: 'Usuário deletado com sucesso',
       sucess: true,
+      statusCode: 200,
       meta: { deletedAt: true },
       data: this.toResponseDto(user),
     } as ResponseApiDto<ResponseUserDto>;
@@ -134,11 +143,16 @@ export class UserService {
 
     if (!user) throw new NotFoundException('User not found');
 
+    if (!user.deletedAt) {
+      throw new ConflictException('User já existente!');
+    }
+
     await this.userRepository.restore(id);
 
     return {
       message: 'Usuário recuperado com sucesso',
       sucess: true,
+      statusCode: 200,
       meta: { restored: true },
       data: this.toResponseDto(user),
     } as ResponseApiDto<ResponseUserDto>;

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseUUIDPipe,
   Patch,
@@ -48,6 +49,7 @@ export class UserController {
     return this.userService.deleteUser(id);
   }
 
+  @HttpCode(200)
   @Post(':id/restore')
   restoreUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.restoreUser(id);

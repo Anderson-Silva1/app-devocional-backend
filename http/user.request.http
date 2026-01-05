@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3000
 
 ### Buscar todos os usuários
-GET {{baseUrl}}/users?limit=10&offset=0
+GET {{baseUrl}}/users?limit=5&offset=0
 
 ### Buscar um usuário específico
 GET {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "name": "anderson",
-  "email": "anderson@example12345234678.com",
+  "email": "anderson@example183425254.com",
   "password": "securepassword"
 }
 
