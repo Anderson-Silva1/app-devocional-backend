@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3000
 
 ### Buscar todos os usuários
-GET {{baseUrl}}/users?limit=5&offset=0
+GET {{baseUrl}}/users?limit=100&offset=0
 
 ### Buscar um usuário específico
 GET {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "name": "anderson",
-  "email": "anderson@example183425254.com",
+  "email": "anderson@example.com",
   "password": "securepassword"
 }
 
@@ -22,14 +22,14 @@ Content-Type: application/json
 
 {
   "name": "Anderson",
-  "email": "anderson@example.com",
+  "email": "anderson@example1.com",
   "password": "securepassword"
 }
 
 
 ### Deletar um usuário
-DELETE {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8
+DELETE {{baseUrl}}/users/fd4b742f-0f7d-4fe9-b3c2-41c35c9e8606
 
 
 ### Restaurar um usuário deletado
-POST {{baseUrl}}/users/e110575c-db2c-42d3-b3fb-f5fe5ff587f8/restore
+POST {{baseUrl}}/users/fd4b742f-0f7d-4fe9-b3c2-41c35c9e8606/restore

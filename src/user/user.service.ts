@@ -72,49 +72,54 @@ export class UserService {
   }
 
   async createUser(dto: CreateUserDto) {
-    // verificar se email existe
-    const emailExists = await this.userRepository.findOneBy({
-      email: dto.email,
-    });
+    try {
+      // Fazer o hash de senha
 
-    if (emailExists) throw new ConflictException('Email already exists');
+      const user = this.userRepository.create(dto);
 
-    // Fazer o hash de senha
+      const newUser = await this.userRepository.save(user);
 
-    const user = this.userRepository.create(dto);
-
-    const newUser = await this.userRepository.save(user);
-
-    return {
-      message: 'Usuário criado com sucesso',
-      sucess: true,
-      statusCode: 201,
-      data: this.toResponseDto(newUser),
-    } as ResponseApiDto<ResponseUserDto>;
+      return {
+        message: 'Usuário criado com sucesso',
+        sucess: true,
+        statusCode: 201,
+        data: this.toResponseDto(newUser),
+      } as ResponseApiDto<ResponseUserDto>;
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (error.code === '23505')
+        throw new ConflictException('Email já existente!');
+    }
   }
 
   async updateUser(id: string, dto: UpdateUserDto) {
-    // Verificar se user existe
-    const user = await this.findUserEntityById(id);
+    try {
+      // Verificar se user existe
+      const user = await this.findUserEntityById(id);
 
-    // Verificar se o email ja esta em uso
-    if (dto.email && dto.email !== user.email) {
-      const emailExists = await this.userRepository.findOneBy({
-        email: dto.email,
-      });
+      // Verificar se o email ja esta em uso
+      if (dto.email && dto.email !== user.email) {
+        const emailExists = await this.userRepository.findOneBy({
+          email: dto.email,
+        });
 
-      if (emailExists) throw new ConflictException('Email already exists');
+        if (emailExists) throw new ConflictException('Email already exists');
+      }
+
+      await this.userRepository.update(id, dto);
+
+      const updatedUser = await this.findUserEntityById(id);
+
+      return {
+        message: 'Usuário atualizado com sucesso',
+        sucess: true,
+        data: this.toResponseDto(updatedUser),
+      } as ResponseApiDto<ResponseUserDto>;
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (error.code === '23505')
+        throw new ConflictException('Email já existente!');
     }
-
-    await this.userRepository.update(id, dto);
-
-    const updatedUser = await this.findUserEntityById(id);
-
-    return {
-      message: 'Usuário atualizado com sucesso',
-      sucess: true,
-      data: this.toResponseDto(updatedUser),
-    } as ResponseApiDto<ResponseUserDto>;
   }
 
   async deleteUser(id: string) {
@@ -144,7 +149,7 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     if (!user.deletedAt) {
-      throw new ConflictException('User já existente!');
+      throw new ConflictException('User já recuperado!');
     }
 
     await this.userRepository.restore(id);
